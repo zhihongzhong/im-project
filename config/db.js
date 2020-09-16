@@ -7,5 +7,4 @@ module.exports = {
     password: 'Zzh&9201',
     database: 'im_test'
   }
-  
 }
