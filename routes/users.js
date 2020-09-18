@@ -10,6 +10,9 @@ const axios = require('axios');
 
 const getMsgTmp = require('../utils/MessageTmpl').default;
 
+function parseResult(data) {
+  return JSON.parse(JSON.stringify(data));
+}
 
 function getUserVo(userRawResult) {
   
@@ -25,7 +28,6 @@ function getUserVo(userRawResult) {
 }
 
 function createImUser(user) {
-  
   
   return new Promise((resolve, reject) => {
     const { username, nickname } = user;
@@ -103,6 +105,22 @@ router.post('/login', async function( req, res, next ){
 
 
 router.get('/', async function(req, res, next) {
-
+  try {
+    let userList = await userDao.queryAll();
+    userList = parseResult(userList);
+    res.send(getMsgTmp(0, "成功", "成功", userList));
+  }catch(e) {
+    res.send(getMsgTmp(500, "处理失败", e.message, {}));
+  }
 });
+
+router.post('/show', async function(req, res, next) {
+  try {
+    let user = await userDao.query(req.username);
+    user = getUserVo(user);
+    res.send(getMsgTmp(0, "成功", "成功", user));
+  }catch(e) {
+    res.send(getMsgTmp(500, "处理失败", e.message, {}));
+  }
+})
 module.exports = router;

@@ -13,6 +13,7 @@ const $sql = {
   delete: "DELETE FROM USER WHERE username = ?",
   query: "select username username, nickname nickname, avatar avatar, password password, " +
     "create_at createAt, update_at updateAt from user where username = ?",
+  queryAll: "select username username, nickname nickname, avatar avatar, create_at createAt, update_at updateAt from user"
 }
 
 const pool = mysql.createPool(config.mysql);
@@ -43,6 +44,19 @@ module.exports = {
         });
         connection.release();
       }))
+    })
+  },
+  
+  queryAll: function() {
+    return new Promise((resolve, reject) => {
+      pool.getConnection(function (errno, connection) {
+        if(errno) return reject(new Error('获取数据库连接失败'));
+        connection.query($sql.queryAll, [], function(err, result) {
+          if(err) reject(err);
+          else resolve(result);
+        });
+        connection.release();
+      })
     })
   }
 }

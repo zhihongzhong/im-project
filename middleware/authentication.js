@@ -22,7 +22,6 @@ function authentication(req, res, next) {
       req.username = jwt.username;
       next();
     }catch(e) {
-      console.log(e);
       res.send(getMsgTmp(905, "解析token失败", "解析token失败", {}));
     }
   }
