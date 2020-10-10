@@ -1,6 +1,5 @@
 
 const express = require('express');
-const router = express.Router();
 
 const dayjs = require('dayjs');
 const mysql = require('mysql');
